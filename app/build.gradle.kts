@@ -41,7 +41,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmToolchain(17)
+        jvmTarget = "17"
     }
     packaging {
         resources {
