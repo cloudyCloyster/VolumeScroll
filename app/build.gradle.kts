@@ -23,19 +23,58 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            multiDexEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
+    androidResources {
+        additionalParameters += listOf("--allow-reserved-package-id", "--package-id", "0x42")
+    }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmToolchain(17)
+    }
+    packaging {
+        resources {
+            merges += "META-INF/xposed/*"
+            excludes += "**"
+        }
+    }
+
+    lint {
+        checkReleaseBuilds = false
+        disable +=
+            listOf(
+                "Internationalization",
+                "UnsafeIntentLaunch",
+                "SetJavaScriptEnabled",
+                "UnspecifiedRegisterReceiverFlag",
+                "Usability:Icons")
+    }
+    applicationVariants.all {
+        val variant = this
+        variant.outputs
+            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+            .forEach { output ->
+                val outputFileName = "${android.namespace}-${variant.versionName}.${variant.versionCode}.apk"
+                println("OutputFileName: $outputFileName")
+                output.outputFileName = outputFileName
+            }
+    }
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
     }
 }
 
