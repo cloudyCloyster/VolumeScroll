@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">VolumeScroll</string>
+    <string name="accessibility_service_description">Scrolls lists using volume buttons in selected apps.</string>
+    <string name="xposed_desc">Module to use volume buttons to scroll</string>
+</resources>

@@ -1,0 +1,24 @@
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="UnusedAttribute" >
+    <Preference
+        app:iconSpaceReserved="false"
+        android:summary="Apps on which to enable volume scroll"
+        android:title="Enabled apps">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="enabled_apps"
+            android:targetClass="com.akylas.volumescroll.AppsListActivity"
+            android:targetPackage="com.akylas.volumescroll" />
+    </Preference>
+    <Preference
+        app:iconSpaceReserved="false"
+        android:summary="Apps to ignore while looking for current app"
+        android:title="Ignored apps">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="disabled_apps"
+            android:targetClass="com.akylas.volumescroll.AppsListActivity"
+            android:targetPackage="com.akylas.volumescroll" />
+    </Preference>
+</PreferenceScreen>
