@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AndroidAppHelper
 import android.content.Context
 import android.content.Intent
+import android.os.PowerManager
 import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
 import com.akylas.volumescroll.utils.Preferences
@@ -71,8 +72,11 @@ class ModuleMain : IXposedHookLoadPackage {
             )) { name == "dispatchKeyEvent" }
                 .hookBefore() {
                     val wakeOnVolume = SystemProperties.get("sys.wakeup_on_volume")
+                    val mPowerManager =
+                        appContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+                    val isLocked = mPowerManager?.isInteractive != true
                     Log.i("dispatchKeyEvent ${it.args[0]} wakeOnVolume:$wakeOnVolume volumeMode:$volumeMode")
-                    if ("1" == wakeOnVolume || volumeMode) {
+                    if (isLocked && ("1" == wakeOnVolume || volumeMode)) {
                         val keyEvent = it.args[0] as KeyEvent
                         val action = keyEvent.action;
                         val keyCode = keyEvent.keyCode;
